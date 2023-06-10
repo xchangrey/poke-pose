@@ -91,13 +91,22 @@ const PokemonList = (): ReactElement => {
       </Header>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {pokemonList?.map((pokemon, index) => (
+        {pokemonList?.map((pokemon) => (
           <div key={pokemon.name} className="bg-white rounded shadow-lg p-8">
-            <img src={pokemon.image} alt={pokemon.name} onClick={() => handlePokemonClick(pokemon.url)} className="mx-auto w-screen max-w-sm" />
+            <img 
+              src={pokemon.image} 
+              alt={pokemon.name} 
+              onClick={() => handlePokemonClick(pokemon.url)} 
+              className="mx-auto w-screen max-w-sm" 
+            />
             <div className="mt-4">
               <p className="font-bold text-lg">{`${formatText(pokemon.name)} #${pokemon.id}`}</p>
               <p className="text-gray-500 mt-5">{pokemon.traits?.map(trait => (
-                <span key={trait} className='bg-gray-200 rounded-full pt-2 pb-2 px-3 mr-2'>{formatText(trait)}</span>
+                <span 
+                  key={trait} 
+                  className='bg-gray-200 rounded-full pt-2 pb-2 px-3 mr-2'>
+                    {formatText(trait)}
+                </span>
               ))}</p>
             </div>
           </div>
