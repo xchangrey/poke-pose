@@ -3,21 +3,25 @@ import axios from 'axios';
 
 async function pokemonFetcher(url: string){
   const res = await axios.get(url);
-  console.log(res.data)
-  return res.data;
+  const { name, sprites, types, stats: _stats } = res.data;
+  const image = sprites.other.home.front_default;
+  const traits = types.map((type: any) => type.type.name);
+  const stats = _stats?.map((_stat: any) => ({
+    stat: _stat.base_stat,
+    name: _stat.stat.name,
+  }));
+
+  return { name, image, traits, stats };
 };
 
 
 
-const usePokemonInfo = (pokemonId: string) => {
-  const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
-  const { data, error, isLoading } = useSWR(apiUrl, pokemonFetcher);
+export default function usePokemonInfo(pokemonId: string) {
+  const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`, pokemonFetcher);
 
   return {
-    pokemon: data,
+    data,
     isLoading,
     error,
   };
 };
-
-export default usePokemonInfo;
