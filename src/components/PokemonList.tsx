@@ -17,7 +17,7 @@ const PokemonList = (): ReactElement => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [resultsPerPage, setResultsPerPage] = useState<number>(10);
   const [showOptions, setShowOptions] = useState(false);
-  const { data } = usePokemons(resultsPerPage, currentPage) ?? [];
+  const { data, isLoading } = usePokemons(resultsPerPage, currentPage) ?? [];
 
   useEffect(() => {
     setPokemonList(data as Pokemon[]);
@@ -83,35 +83,56 @@ const PokemonList = (): ReactElement => {
             onClick={nextPage}
           >
             Next
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 ml-2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke-width="1.5" 
+              stroke="currentColor" 
+              className="w-6 h-6 ml-2"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" 
+              />
             </svg>
           </button>
         </div>
       </Header>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {pokemonList?.map((pokemon) => (
-          <div key={pokemon.name} className="bg-white rounded shadow-lg p-8">
-            <img 
-              src={pokemon.image} 
-              alt={pokemon.name} 
-              onClick={() => handlePokemonClick(pokemon.url)} 
-              className="mx-auto w-screen max-w-sm" 
-            />
-            <div className="mt-4">
-              <p className="font-bold text-lg">{`${formatText(pokemon.name)} #${pokemon.id}`}</p>
-              <p className="text-gray-500 mt-5">{pokemon.traits?.map(trait => (
-                <span 
-                  key={trait} 
-                  className='bg-gray-200 rounded-full pt-2 pb-2 px-3 mr-2'>
-                    {formatText(trait)}
-                </span>
-              ))}</p>
-            </div>
+      {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
           </div>
-        ))}
-      </div>
+        ): (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {pokemonList?.map((pokemon) => (
+                <div key={pokemon.name} className="bg-white rounded shadow-lg p-8">
+                  <img 
+                    src={pokemon.image} 
+                    alt={pokemon.name} 
+                    onClick={() => handlePokemonClick(pokemon.url)} 
+                    className="mx-auto w-screen max-w-sm" 
+                  />
+                  <div className="mt-4">
+                    <p className="font-bold text-lg">{`${formatText(pokemon.name)} #${pokemon.id}`}</p>
+                    <p className="text-gray-500 mt-5">{pokemon.traits?.map(trait => (
+                      <span 
+                        key={trait} 
+                        className='bg-gray-200 rounded-full pt-2 pb-2 px-3 mr-2'>
+                          {formatText(trait)}
+                      </span>
+                    ))}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+      
       
     </div>
   );

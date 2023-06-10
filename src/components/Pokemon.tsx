@@ -18,7 +18,7 @@ const Pokemon = (): ReactElement => {
   const navigate = useNavigate();
   const { id = '' } = useParams<keyof URLParam>();
   const [pokemon, setPokemon] = useState<Pokemon>();
-  const { data } = usePokemonInfo(id) ?? {};
+  const { data, isLoading } = usePokemonInfo(id) ?? {};
 
   useEffect(() => {
     setPokemon(data as Pokemon);
@@ -42,35 +42,43 @@ const Pokemon = (): ReactElement => {
             Back
           </button>
         </Header>
-        <p className="text-center font-bold text-2xl mt-2">
-          {`${formatText(pokemon?.name ?? '')} #${id}`}
-        </p>
-        <img
-          src={pokemon?.image}
-          alt={pokemon?.name}
-          className="mx-auto w-full mt-8 mb-8"
-        />
-
-        <div className="mt-4">
-          <div className="flex justify-between rounded p-2">
-            <span className="font-bold">Attribute</span>
-            <span className="font-bold">Value</span>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
           </div>
-            {pokemon?.stats?.map((_stat: any) => (
-              <div key={_stat.name} className="flex justify-between  leading-3 p-2">
-                <span className='text-left'>{formatText(_stat.name)}</span>
-                <span className='text-left'>{_stat.stat}</span>
+        ): (
+          <>
+            <p className="text-center font-bold text-2xl mt-2">
+              {`${formatText(pokemon?.name ?? '')} #${id}`}
+            </p>
+            <img
+              src={pokemon?.image}
+              alt={pokemon?.name}
+              className="mx-auto w-full mt-8 mb-8"
+            />
+
+            <div className="mt-4">
+              <div className="flex justify-between rounded p-2">
+                <span className="font-bold">Attribute</span>
+                <span className="font-bold">Value</span>
               </div>
-            ))}
-        </div>
-        <p className="text-gray-500 mt-5 text-left">
-          {pokemon?.traits?.map(trait => (
-            <span 
-              key={trait} 
-              className='bg-gray-200 rounded-full font-bold pt-2 pb-2 px-3 mr-2'>
-                {formatText(trait)}
-            </span>
-          ))}</p>
+                {pokemon?.stats?.map((_stat: any) => (
+                  <div key={_stat.name} className="flex justify-between  leading-3 p-2">
+                    <span className='text-left'>{formatText(_stat.name)}</span>
+                    <span className='text-left'>{_stat.stat}</span>
+                  </div>
+                ))}
+            </div>
+            <p className="text-gray-500 mt-5 text-left">
+              {pokemon?.traits?.map(trait => (
+                <span 
+                  key={trait} 
+                  className='bg-gray-200 rounded-full font-bold pt-2 pb-2 px-3 mr-2'>
+                    {formatText(trait)}
+                </span>
+              ))}</p> 
+          </>
+        )}
       </div>
     </div>
   );
