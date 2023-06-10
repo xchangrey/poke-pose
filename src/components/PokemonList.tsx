@@ -1,12 +1,17 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+
+import type { ReactElement } from 'react';
+import type { Pokemon } from '../types/pokemon';
+
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import usePokemons from '../hooks/usePokemons';
+
 import { getPokemonIdFromUrl } from '../utils/getPokemonIdFromUrl';
-import type { Pokemon } from '../types/pokemon';
 import { formatText } from '../utils/formatText';
+
 import Header from './Header';
 
-const PokemonList: React.FC = () => {
+const PokemonList = (): ReactElement => {
   const navigate = useNavigate();
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -87,8 +92,8 @@ const PokemonList: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {pokemonList?.map((pokemon, index) => (
-          <div key={pokemon.name} className="bg-white rounded shadow-lg p-4">
-            <img src={pokemon.image} alt={pokemon.name} onClick={() => handlePokemonClick(pokemon.url)} className="mx-auto w-screen" />
+          <div key={pokemon.name} className="bg-white rounded shadow-lg p-8">
+            <img src={pokemon.image} alt={pokemon.name} onClick={() => handlePokemonClick(pokemon.url)} className="mx-auto w-screen max-w-sm" />
             <div className="mt-4">
               <p className="font-bold text-lg">{`${formatText(pokemon.name)} #${pokemon.id}`}</p>
               <p className="text-gray-500 mt-5">{pokemon.traits?.map(trait => (

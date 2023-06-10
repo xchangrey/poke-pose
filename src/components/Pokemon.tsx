@@ -1,10 +1,12 @@
 
+import type { ReactElement } from 'react';
 import type { Pokemon } from '../types/pokemon';
 
-// Import the required Tailwind CSS classes
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import usePokemonInfo from '../hooks/usePokemon';
+
 import Header from './Header';
 import { formatText } from '../utils/formatText';
 
@@ -12,7 +14,7 @@ interface URLParam {
   id: string;
 }
 
-const Pokemon = () => {
+const Pokemon = (): ReactElement => {
   const navigate = useNavigate();
   const { id = '' } = useParams<keyof URLParam>();
   const [pokemon, setPokemon] = useState<Pokemon>();
@@ -28,7 +30,7 @@ const Pokemon = () => {
 
   return (
     <div>
-      <div className="flex flex-col max-w-md mx-auto bg-gray-100 p-16">
+      <div className="flex flex-col max-w-md mx-auto p-16">
         <Header>
           <button
             className="flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded m-8"
@@ -44,7 +46,7 @@ const Pokemon = () => {
         <img
           src={pokemon?.image}
           alt={pokemon?.name}
-          className="mx-auto w-screen mt-8 mb-8"
+          className="mx-auto w-full mt-8 mb-8"
         />
 
         <div className="mt-4">
@@ -58,10 +60,11 @@ const Pokemon = () => {
               <span className='text-left'>{_stat.stat}</span>
             </div>
           ))}
-          <p className="text-gray-500 mt-5">{pokemon?.traits?.map(trait => (
+          
+        </div>
+        <p className="text-gray-500 mt-5 text-left">{pokemon?.traits?.map(trait => (
             <span key={trait} className='bg-gray-200 rounded-full font-bold pt-2 pb-2 px-3 mr-2'>{formatText(trait)}</span>
           ))}</p>
-        </div>
       </div>
     </div>
   );
