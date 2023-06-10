@@ -1,0 +1,103 @@
+import React, { MouseEventHandler, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import usePokemons from '../hooks/usePokemons';
+import { getPokemonIdFromUrl } from '../utils/getPokemonIdFromUrl';
+import type { Pokemon } from '../utils/types/pokemon';
+
+const PokemonList: React.FC = () => {
+  const navigate = useNavigate();
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [resultsPerPage, setResultsPerPage] = useState<number>(10);
+  const [showOptions, setShowOptions] = useState(false);
+  const { data } = usePokemons(resultsPerPage, currentPage) ?? [];
+
+  useEffect(() => {
+    setPokemonList(data as Pokemon[]);
+  }, [data]);
+
+  const nextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const previousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+  const handleResultsPerPage = (value: number) => {
+    setResultsPerPage(value);
+    setCurrentPage(1);
+    setShowOptions(false);
+  };
+  const handlePokemonClick = (url: string): void => {
+    const pokemonId = getPokemonIdFromUrl(url);
+    navigate(`/pokemon/${pokemonId}`);
+  };
+  const resultsPerPageOptions = [10, 20, 50, 100];
+
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="text-4xl font-bold mb-4">Pokémon List</h1>
+      <div className="flex justify-center mt-8">
+        <button
+          className="flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-2"
+          onClick={previousPage}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+          </svg> Prev
+        </button>
+        <div className='relative mr-2'>
+        <button
+          className="text-gray py-2 px-4 round mr-2 border-transparent text-decoration"
+          onClick={() => setShowOptions((prevValue) => !prevValue)}
+        >
+          <p className='underline underline-offset-8'>{`Show ${resultsPerPage} results`}</p>
+        </button>
+        {showOptions && (
+          <div className="absolute mt-15 py-2 w-full bg-white border border-gray-300 rounded shadow">
+            {resultsPerPageOptions.map((option) => (
+              <button
+                key={option}
+                className={`block px-4 py-2 text-sm ${
+                  resultsPerPage === option ? 'font-bold' : ''
+                }`}
+                onClick={() => handleResultsPerPage(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        )}
+        </div>
+        <button
+          className="flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+          onClick={nextPage}
+        >
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 ml-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+          </svg>
+        </button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {pokemonList?.map((pokemon, index) => (
+          <div key={pokemon.name} className="bg-white rounded shadow-lg p-4">
+            <img src={pokemon.image} alt={pokemon.name} onClick={handlePokemonClick(pokemon.url) as unknown as MouseEventHandler<HTMLImageElement>} className="mx-auto w-screen" />
+            <div className="mt-4">
+              <p className="font-bold text-lg">{`${pokemon.name.charAt(0).toUpperCase()
+  + pokemon.name.slice(1)} #${index}`}</p>
+              <p className="text-gray-500 mt-5">{pokemon.traits?.map(trait => (
+                <span className='bg-gray-200 rounded-full pt-2 pb-2 px-3 mr-2'>{trait}</span>
+              ))}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+    </div>
+  );
+};
+
+export default PokemonList;
