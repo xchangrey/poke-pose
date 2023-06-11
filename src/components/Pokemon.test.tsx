@@ -6,10 +6,6 @@ import Pokemon from '../components/Pokemon';
 
 import '@testing-library/jest-dom/extend-expect';
 
-
-// Your test code here
-
-
 const server = setupServer(
   rest.get('https://pokeapi.co/api/v2/pokemon/', (req, res, ctx) => {
     const data = {

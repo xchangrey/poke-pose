@@ -142,9 +142,6 @@ const PokemonList = (): ReactElement => {
             </div>
           </>
         )}
-
-      
-      
     </div>
   );
 };
