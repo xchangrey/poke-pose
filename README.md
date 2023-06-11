@@ -1,6 +1,6 @@
-# PokeAPI React App
+# Poke Pose React App
 
-This is a simple React application that displays information about Pokémon using the PokeAPI.
+This is a simple React application that displays information about Pokémon using the PokeAPI. You can visit the link [HERE](https://poke-pose.vercel.app/).
 
 ## Features
 
