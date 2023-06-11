@@ -51,8 +51,19 @@ const PokemonList = (): ReactElement => {
             className="flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-2"
             onClick={previousPage}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              strokeWidth="1.5" 
+              stroke="currentColor" 
+              className="w-6 h-6 mr-2"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" 
+              />
             </svg> Prev
           </button>
           <div className='relative mr-2'>
@@ -87,13 +98,13 @@ const PokemonList = (): ReactElement => {
               xmlns="http://www.w3.org/2000/svg" 
               fill="none" 
               viewBox="0 0 24 24" 
-              stroke-width="1.5" 
+              strokeWidth="1.5" 
               stroke="currentColor" 
               className="w-6 h-6 ml-2"
             >
               <path 
-                stroke-linecap="round" 
-                stroke-linejoin="round" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
                 d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" 
               />
             </svg>
@@ -109,12 +120,12 @@ const PokemonList = (): ReactElement => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {pokemonList?.map((pokemon) => (
-                <div key={pokemon.name} className="bg-white rounded shadow-lg p-8">
+                <div data-testid="pokemon" key={pokemon.name} className="bg-white rounded shadow-lg p-8">
                   <img 
                     src={pokemon.image} 
                     alt={pokemon.name} 
                     onClick={() => handlePokemonClick(pokemon.url)} 
-                    className="mx-auto w-screen max-w-sm" 
+                    className="mx-auto w-full max-w-sm" 
                   />
                   <div className="mt-4">
                     <p className="font-bold text-lg">{`${formatText(pokemon.name)} #${pokemon.id}`}</p>
