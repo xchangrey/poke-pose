@@ -8,7 +8,7 @@ export default defineConfig({
     rollupOptions: {
       // Specify the entry point for your application
       input: {
-        main: 'src/main.jsx',
+        main: 'index.html',
       }, // Adjust the path if needed
 
       // Add any explicit optimizeDeps.include patterns
